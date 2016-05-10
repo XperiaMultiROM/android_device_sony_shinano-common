@@ -23,6 +23,9 @@ on fs
     mount_all ./fstab.shinano
     write /sys/kernel/boot_adsp/boot 1
 
+    # Start hvdcp to enable quick charge 2.0 in power off charge
+    start hvdcp
+
 on boot
     # Cover mode
     chown system system /sys/devices/virtual/input/clearpad/cover_mode_enabled
@@ -105,7 +108,7 @@ on property:vold.post_fs_data_done=1
 on property:bluetooth.isEnabled=true
     write /sys/class/bluetooth/hci0/idle_timeout 7000
 
-service hvdcp /system/vendor/bin/hvdcp
+service hvdcp /system/bin/hvdcp
     class core
     user root
     disabled

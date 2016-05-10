@@ -15,6 +15,10 @@
 # Common
 include device/sony/shinano-common/PlatformConfig.mk
 
+# Custom Boot Image
+BOARD_CUSTOM_BOOTIMG := true
+BOARD_CUSTOM_BOOTIMG_MK := device/sony/common/boot/custombootimg.mk
+
 #MultiROM config. MultiROM also uses parts of TWRP config
 MR_INPUT_TYPE := type_b
 MR_INIT_DEVICES := device/sony/shinano-common/multirom/mr_init_devices.c
