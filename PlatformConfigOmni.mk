@@ -15,6 +15,9 @@
 # Common
 include device/sony/shinano-common/PlatformConfig.mk
 
+# Bootdevice 
+BOARD_KERNEL_CMDLINE += androidboot.bootdevice=msm_sdcc.1
+
 # Custom Boot Image
 BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := device/sony/common/boot/custombootimg.mk
@@ -30,3 +33,6 @@ MR_USE_MROM_FSTAB := true
 MR_QCOM_OVERLAY_CUSTOM_PIXEL_FORMAT := MDP_RGBX_8888
 MR_PIXEL_FORMAT := "RGBX_8888"
 MR_KEXEC_MEM_MIN := 0x3e7e0000
+
+# TWRP
+TW_MAX_BRIGHTNESS := 255
