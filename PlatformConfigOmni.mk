@@ -27,6 +27,7 @@ MR_INIT_DEVICES := device/sony/shinano-common/multirom/mr_init_devices.c
 MR_USE_QCOM_OVERLAY := true
 MR_QCOM_OVERLAY_HEADER := device/sony/shinano-common/multirom/mr_qcom_overlay.h
 MR_KEXEC_DTB := true
+MR_ALLOW_NKK71_NOKEXEC_WORKAROUND := true
 MR_FSTAB := device/sony/shinano-common/rootdir/twrp.fstab
 MR_USE_MROM_FSTAB := true
 MR_QCOM_OVERLAY_CUSTOM_PIXEL_FORMAT := MDP_RGBX_8888
