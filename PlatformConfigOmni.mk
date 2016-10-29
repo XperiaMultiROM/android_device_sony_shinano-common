@@ -24,6 +24,7 @@ TARGET_KERNEL_SOURCE := kernel/sony/msm
 #MultiROM config. MultiROM also uses parts of TWRP config
 MR_INPUT_TYPE := type_b
 MR_INIT_DEVICES := device/sony/shinano-common/multirom/mr_init_devices.c
+MR_BINARY_SELECTOR := device/sony/shinano-common/multirom/mr_binary_selector.c
 MR_USE_QCOM_OVERLAY := true
 MR_QCOM_OVERLAY_HEADER := device/sony/shinano-common/multirom/mr_qcom_overlay.h
 MR_KEXEC_DTB := true
