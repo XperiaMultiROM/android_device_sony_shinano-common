@@ -22,6 +22,8 @@ BOARD_KERNEL_CMDLINE += androidboot.bootdevice=msm_sdcc.1
 TARGET_KERNEL_SOURCE := kernel/sony/msm
 
 #MultiROM config. MultiROM also uses parts of TWRP config
+TARGET_RECOVERY_IS_MULTIROM := true
+
 MR_INPUT_TYPE := type_b
 MR_INIT_DEVICES := device/sony/shinano-common/multirom/mr_init_devices.c
 MR_BINARY_SELECTOR := device/sony/shinano-common/multirom/mr_binary_selector.c
