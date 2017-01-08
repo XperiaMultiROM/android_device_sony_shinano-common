@@ -37,7 +37,7 @@ MR_USE_MROM_FSTAB := true
 MR_QCOM_OVERLAY_CUSTOM_PIXEL_FORMAT := MDP_RGBX_8888
 MR_PIXEL_FORMAT := "RGBX_8888"
 MR_KEXEC_MEM_MIN := 0x3e7e0000
-MR_DEVICE_HOOKS := device/sony/shinano-common/multirom/mr_ric_hook.c
+MR_DEVICE_HOOKS := device/sony/shinano-common/multirom/mr_hooks.c
 MR_DEVICE_HOOKS_VER := 3
 
 # Ensure gzip compression for recovery
