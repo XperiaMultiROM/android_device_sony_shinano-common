@@ -2,36 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mount.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #include <cutils/klog.h>
 
 #ifdef MR_DEVICE_HOOKS
 
 #define INFO_DEV(fmt, ...) klog_write(6, "<6>%s: " fmt, "Mrom device hook", ##__VA_ARGS__)
+#define ERROR(fmt, ...) klog_write(3, "<3>%s: " fmt, "Mrom device hook", ##__VA_ARGS__)
 
 static char ric_was_enabled = 0;
 
 #if MR_DEVICE_HOOKS >= 1
-int mrom_hook_after_android_mounts(const char *busybox_path, const char *base_path, int type)
-{
-	if (ric_was_enabled == '1')
-	{
-		FILE *fd = fopen("/sys/kernel/security/sony_ric/enable", "r");
-		if (fd != NULL) {
-			INFO_DEV("Re-enabling RIC (It was set before).\n");
-			fwrite (&ric_was_enabled, 1, 1, fd);
-			fclose(fd);
-		}
-	}
-	return 0;
-}
-#endif
-
-#if MR_DEVICE_HOOKS >= 2
-void mrom_hook_before_fb_close(void) {}
-#endif
-
-#if MR_DEVICE_HOOKS >= 3
 static int remove_line_file(const char* filename, const char* search_str) {
     char* outFileName = "tmpfile";
     FILE* inFile = fopen(filename, "r");
@@ -62,6 +45,40 @@ static int remove_line_file(const char* filename, const char* search_str) {
     return 0;
 }
 
+void remove_apps_log_entry_fstab() {
+    // Prevent mounting the apps_log partition whose use would break stock roms.
+    struct stat info;
+    if (stat("/fstab.shinano", &info) == 0) {
+        remove_line_file("/fstab.shinano", "apps_log");
+    } else if (stat("/fstab.qcom", &info) == 0) {
+        remove_line_file("/fstab.qcom", "apps_log");
+    }
+}
+
+int mrom_hook_after_android_mounts(const char *busybox_path, const char *base_path, int type)
+{
+	if (ric_was_enabled == '1')
+	{
+		FILE *fd = fopen("/sys/kernel/security/sony_ric/enable", "r");
+		if (fd != NULL) {
+			INFO_DEV("Re-enabling RIC (It was set before).\n");
+			fwrite (&ric_was_enabled, 1, 1, fd);
+			fclose(fd);
+		}
+	}
+
+	// For secondary roms here.
+	remove_apps_log_entry_fstab();
+
+	return 0;
+}
+#endif // MR_DEVICE_HOOKS >= 1
+
+#if MR_DEVICE_HOOKS >= 2
+void mrom_hook_before_fb_close(void) {}
+#endif
+
+#if MR_DEVICE_HOOKS >= 3
 void tramp_hook_before_device_init(void)
 {
 	// Mount the securityfs for disabling sony_ric.
@@ -91,9 +108,8 @@ void tramp_hook_before_device_init(void)
     	}
     }
 
-    // Prevent mounting the apps_log partition whose use would break stock roms.
-    //system("sed -i -e 's/\\/dev\\/block\\/bootdevice\\/by-name\\/apps_log.*\\/misc/#\\/dev\\/block\\/bootdevice\\/by-name\\/apps_log\\1\\/misc/g' /fstab.shinano");
-    remove_line_file("/fstab.shinano", "apps_log");
+    // For primary roms here.
+    remove_apps_log_entry_fstab();
 }
 #endif
 
